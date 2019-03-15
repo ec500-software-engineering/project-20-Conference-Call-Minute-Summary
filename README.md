@@ -13,8 +13,8 @@ our server or website then we could show them the result. They would no longer n
 build their own classifier.
 
 ## Architecture
-
-##Technology
+![](https://github.com/ec500-software-engineering/project-solar_wind_classification_no-2/raw/master/image/Fram.png)
+## Technology
 * Database : MongoDB
 * Libraries: MATLAB API for Python
 * IDE : Pycharm
