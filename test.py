@@ -7,7 +7,7 @@ from ibm_watson import SpeechToTextV1
 service = SpeechToTextV1(
     ## url is optional, and defaults to the URL below. Use the correct URL for your region.
     url='https://stream.watsonplatform.net/speech-to-text/api',
-    iam_apikey="4uC92CUZ5yS5sXxg7GROP0cC63O8wOR72jyj0yf8qTG-")
+    iam_apikey="")
 
 # with open(join(dirname(__file__), 'project-20-Conference-Call-Minute-Summary/happybirthday.mp3'),
 #           'rb') as audio_file:
