@@ -29,8 +29,8 @@ class Recorder:
                          frames_per_buffer=self.NUM_SAMPLES)
         save_buffer = []
         self.recording = True
+        timec = 30
         while True:
-            print("hi")
             # print time_count
             # 读入NUM_SAMPLES个取样
             string_audio_data = stream.read(self.NUM_SAMPLES) 
@@ -41,7 +41,9 @@ class Recorder:
             # 如果个数大于COUNT_NUM，则至少保存SAVE_LENGTH个块
             if large_sample_count > self.COUNT_NUM:
                 save_buffer.append( string_audio_data )
-            if not self.recording:
+            timec -= 1
+            print(timec)
+            if not self.recording or timec == 0:
                 if len(save_buffer)>0:
                     self.Voice_String = save_buffer
                     save_buffer = [] 
@@ -56,9 +58,8 @@ class Recorder:
 
 if __name__ == "__main__":
     r = Recorder()
-    T = multiprocessing.Process(target=r.recorder())
-    T.exitcode = "sign"
-    T.start()
+    r.recorder()
+    r.savewav('test.wav')
     print("sign")
     # r.recorder()
     # r.savewav("test.wav")

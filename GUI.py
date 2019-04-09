@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from audio import Recorder
-import subprocess
+import multiprocessing
 
 
 class GUI(QWidget):
@@ -21,7 +21,8 @@ class GUI(QWidget):
             self.recording = True
             self.button.setText('Stop Recording')
             re = Recorder()
-            subprocess.Popen(re.recorder())
+            P = multiprocessing.Process(target=re.recorder())
+            P.start()
         else:
             self.re.savewav("test.wav")
             self.re.Stop_record()
@@ -34,5 +35,6 @@ if __name__ == '__main__':
     qb = GUI()
     qb.show()
     sys.exit(app.exec_())
+
 
 
