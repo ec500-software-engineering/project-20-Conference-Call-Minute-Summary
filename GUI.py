@@ -1,7 +1,8 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-import pyaudio,wave
+from audio import Recorder
+import subprocess
 
 
 class GUI(QWidget):
@@ -9,7 +10,6 @@ class GUI(QWidget):
         super().__init__()
         self.setMinimumSize(QSize(300, 300))
         self.setWindowTitle('CCMS')
-
         self.recording = False
 
         self.button = QPushButton('Start Recording', self)
@@ -20,16 +20,19 @@ class GUI(QWidget):
         if not self.recording:
             self.recording = True
             self.button.setText('Stop Recording')
+            re = Recorder()
+            subprocess.Popen(re.recorder())
         else:
+            self.re.savewav("test.wav")
+            self.re.Stop_record()
             self.recording = False
             self.button.setText('Start Recording')
 
 
-
-
-app = QApplication(sys.argv)
-qb = GUI()
-qb.show()
-sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    qb = GUI()
+    qb.show()
+    sys.exit(app.exec_())
 
 
