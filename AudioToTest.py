@@ -9,7 +9,7 @@ class AudioToTest():
         self.service = SpeechToTextV1(
             ## url is optional, and defaults to the URL below. Use the correct URL for your region.
             url='https://stream.watsonplatform.net/speech-to-text/api',
-            iam_apikey="4uC92CUZ5yS5sXxg7GROP0cC63O8wOR72jyj0yf8qTG-")
+            iam_apikey="")
 
     def recognize(self, path):
         with open(path,
