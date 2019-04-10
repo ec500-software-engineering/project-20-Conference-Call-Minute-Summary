@@ -1,13 +1,12 @@
 from pyaudio import PyAudio, paInt16 
 import numpy as np
 import wave
-import multiprocessing
 
 
 class Recorder:
     def __init__(self):
         self.NUM_SAMPLES = 2000      #pyaudio内置缓冲大小
-        self.SAMPLING_RATE = 8000    #取样频率
+        self.SAMPLING_RATE = 44100    #取样频率
         self.LEVEL = 500         #声音保存的阈值
         self.COUNT_NUM = 20      #NUM_SAMPLES个取样之内出现COUNT_NUM个大于LEVEL的取样则记录声音
         self.SAVE_LENGTH = 8         #声音记录的最小长度：SAVE_LENGTH * NUM_SAMPLES 个取样
@@ -29,9 +28,9 @@ class Recorder:
                          frames_per_buffer=self.NUM_SAMPLES)
         save_buffer = []
         self.recording = True
-        timec = 30
+        timec = 100
         while True:
-            # print time_count
+            # print time_countb
             # 读入NUM_SAMPLES个取样
             string_audio_data = stream.read(self.NUM_SAMPLES) 
             # 将读入的数据转换为数组
