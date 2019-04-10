@@ -50,6 +50,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
         QVBoxLayout, QWidget, QFileDialog)
 import sys
 import AudioToTest
+import os
 
 class WidgetGallery(QDialog):
     def __init__(self, parent=None):
@@ -75,7 +76,7 @@ class WidgetGallery(QDialog):
 
         mainLayout = QGridLayout()
         mainLayout.addLayout(topLayout, 0, 0, 1, 2)
-        mainLayout.addWidget(self.topRightGroupBox, 1, 1)
+        mainLayout.addWidget(self.topRightGroupBox,1, 1)
         mainLayout.addWidget(self.bottomRightGroupBox, 2, 1)
         mainLayout.setRowStretch(1, 1)
         mainLayout.setRowStretch(2, 1)
@@ -134,10 +135,14 @@ class WidgetGallery(QDialog):
         self.transferButton.setDefault(True)
         self.transferButton.clicked.connect(self.transfer_button)
 
+        self.filetransferButton = QPushButton("File Transfer")
+
+
         layout = QGridLayout()
         layout.addWidget(self.lineEdit, 0, 0, 1, 2)
         layout.addWidget(self.chooseButton, 1, 0, 1, 2)
-        layout.addWidget(self.dateTimeEdit, 2, 0, 1, 2)
+        layout.addWidget(self.transferButton, 2, 0, 1, 2)
+        layout.addWidget(self.filetransferButton,3,0,1,2)
         layout.setRowStretch(5, 1)
         self.bottomRightGroupBox.setLayout(layout)
 
@@ -154,6 +159,13 @@ class WidgetGallery(QDialog):
 
     def transfer_button(self):
         self.A.recognize(self.lineEdit.text())
+
+    def File_Trans(self):
+        absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
+                                                    '.', "wav files (*.wav)")
+        if absolute_path:
+            os.system("ffmpeg -i "+absolute_path+"output.wav")
+
 
 
 if __name__ == '__main__':
