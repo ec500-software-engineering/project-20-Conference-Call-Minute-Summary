@@ -23,6 +23,5 @@ class AudioToTest():
                     timestamps=True,
                     ).get_result(),
                 indent=2)
-            print(type(text))
             with open("./test.json",'w') as F:
                 F.write(text)

@@ -42,13 +42,14 @@
 #############################################################################
 
 
-from PyQt5.QtCore import QDateTime, Qt, QTimer
+from PyQt5.QtCore import QDateTime, Qt, QTimer, QDir
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
         QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
         QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
         QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-        QVBoxLayout, QWidget)
+        QVBoxLayout, QWidget, QFileDialog)
 import sys
+import AudioToTest
 
 class WidgetGallery(QDialog):
     def __init__(self, parent=None):
@@ -85,6 +86,8 @@ class WidgetGallery(QDialog):
         self.setWindowTitle("Styles")
         self.changeStyle('Windows')
 
+        self.A = AudioToTest.AudioToTest()
+
     def changeStyle(self, styleName):
         QApplication.setStyle(QStyleFactory.create(styleName))
         self.changePalette()
@@ -100,9 +103,11 @@ class WidgetGallery(QDialog):
     def createTopRightGroupBox(self):
         self.topRightGroupBox = QGroupBox("Recording")
 
-        self.recordingButton = QPushButton("Recording Start")
+        self.recordingButton = QPushButton("Start Recording")
         self.recordingButton.setCheckable(True)
         self.recordingButton.setDefault(True)
+        self.recordingButton.clicked.connect(self.recording_button_clicked)
+
 
         self.lineEdit = QLineEdit('wav file saving name')
 
@@ -119,20 +124,36 @@ class WidgetGallery(QDialog):
     def createBottomRightGroupBox(self):
         self.bottomRightGroupBox = QGroupBox("Speech to Text")
 
-        self.lineEdit = QLineEdit('s3cRe7')
+        self.lineEdit = QLineEdit('')
 
-        self.transButton = QPushButton("transfer")
-        self.transButton.setDefault(True)
+        self.chooseButton = QPushButton("Choose File")
+        self.chooseButton.setDefault(True)
+        self.chooseButton.clicked.connect(self.choose_button_clicked)
 
-        self.dateTimeEdit = QDateTimeEdit(self.bottomRightGroupBox)
-        self.dateTimeEdit.setDateTime(QDateTime.currentDateTime())
+        self.transferButton = QPushButton("Transfer")
+        self.transferButton.setDefault(True)
+        self.transferButton.clicked.connect(self.transfer_button)
 
         layout = QGridLayout()
         layout.addWidget(self.lineEdit, 0, 0, 1, 2)
-        layout.addWidget(self.transButton, 1, 0, 1, 2)
+        layout.addWidget(self.chooseButton, 1, 0, 1, 2)
         layout.addWidget(self.dateTimeEdit, 2, 0, 1, 2)
         layout.setRowStretch(5, 1)
         self.bottomRightGroupBox.setLayout(layout)
+
+    def recording_button_clicked(self):
+        if self.recordingButton.isChecked():
+            self.recordingButton.setText("Stop Recording")
+        else:
+            self.recordingButton.setText("Start Recording")
+
+    def choose_button_clicked(self):
+        absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
+                                                    '.', "wav files (*.wav)")
+        self.lineEdit.setText(absolute_path[0])
+
+    def transfer_button(self):
+        self.A.recognize(self.lineEdit.text())
 
 
 if __name__ == '__main__':
