@@ -52,6 +52,7 @@ import sys
 import AudioToTest
 import os
 
+
 class WidgetGallery(QDialog):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
@@ -136,6 +137,7 @@ class WidgetGallery(QDialog):
         self.transferButton.clicked.connect(self.transfer_button)
 
         self.filetransferButton = QPushButton("File Transfer")
+        self.filetransferButton.clicked.connect(self.File_Trans)
 
 
         layout = QGridLayout()
@@ -165,7 +167,8 @@ class WidgetGallery(QDialog):
                                                     '.', "wav files (*.wav)")
         if absolute_path:
             os.system("ffmpeg -i "+absolute_path+"output.wav")
-
+        else:
+            print("No such file")
 
 
 if __name__ == '__main__':
