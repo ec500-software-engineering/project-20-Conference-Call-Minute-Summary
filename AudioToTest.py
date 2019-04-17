@@ -17,7 +17,7 @@ class AudioToTest():
             text = json.dumps(
                 self.service.recognize(
                     audio=audio_file,
-                    content_type='audio/webm',
+                    content_type='audio/wav',
                     smart_formatting=True,
                     max_alternatives=1,
                     timestamps=True,
@@ -25,3 +25,12 @@ class AudioToTest():
                 indent=2)
             with open("./test.json",'w') as F:
                 F.write(text)
+
+    def openjson(self,path):
+        js = open(path)
+        dic = json.loads(js.read())
+        print(dic)
+        for i in dic['results']:
+            for j in i['alternatives']:
+                print(j['transcript'])
+        return dic['results'][0]['alternatives'][0]['transcript']

@@ -51,6 +51,8 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
 import sys
 import AudioToTest
 import os
+import audio
+import threading
 
 
 class WidgetGallery(QDialog):
@@ -67,6 +69,7 @@ class WidgetGallery(QDialog):
 
         self.createTopRightGroupBox()
         self.createBottomRightGroupBox()
+        self.createLeftBox()
 
         styleComboBox.activated[str].connect(self.changeStyle)
 
@@ -79,6 +82,7 @@ class WidgetGallery(QDialog):
         mainLayout.addLayout(topLayout, 0, 0, 1, 2)
         mainLayout.addWidget(self.topRightGroupBox,1, 1)
         mainLayout.addWidget(self.bottomRightGroupBox, 2, 1)
+        mainLayout.addWidget(self.LeftBox,1,0)
         mainLayout.setRowStretch(1, 1)
         mainLayout.setRowStretch(2, 1)
         mainLayout.setColumnStretch(0, 1)
@@ -87,6 +91,8 @@ class WidgetGallery(QDialog):
 
         self.setWindowTitle("Styles")
         self.changeStyle('Windows')
+
+        self.audio = audio.Recorder()
 
         self.A = AudioToTest.AudioToTest()
 
@@ -123,6 +129,13 @@ class WidgetGallery(QDialog):
         layout.addStretch(1)
         self.topRightGroupBox.setLayout(layout)
 
+    def createLeftBox(self):
+        self.LeftBox = QGroupBox("Text")
+        self.speechText = QLineEdit("blank")
+        layout = QGridLayout()
+        layout.addWidget(self.speechText,0,0,1,2)
+        self.LeftBox.setLayout(layout)
+
     def createBottomRightGroupBox(self):
         self.bottomRightGroupBox = QGroupBox("Speech to Text")
 
@@ -139,41 +152,71 @@ class WidgetGallery(QDialog):
         self.filetransferButton = QPushButton("File Transfer")
         self.filetransferButton.clicked.connect(self.File_Trans)
 
+        self.JsonButton = QPushButton("Open Json")
+        self.JsonButton.clicked.connect(self.Open_Json)
 
         layout = QGridLayout()
         layout.addWidget(self.lineEdit, 0, 0, 1, 2)
         layout.addWidget(self.chooseButton, 1, 0, 1, 2)
         layout.addWidget(self.transferButton, 2, 0, 1, 2)
         layout.addWidget(self.filetransferButton,3,0,1,2)
+        layout.addWidget(self.JsonButton,4,0,1,2)
         layout.setRowStretch(5, 1)
         self.bottomRightGroupBox.setLayout(layout)
 
     def recording_button_clicked(self):
         if self.recordingButton.isChecked():
             self.recordingButton.setText("Stop Recording")
+            T = threading.Thread(target=self.audio.recorder())
+            T.start()
+            # self.audio.recorder()
         else:
             self.recordingButton.setText("Start Recording")
+            # self.audio.stop_record()
 
     def choose_button_clicked(self):
-        absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
-                                                    '.', "wav files (*.wav)")
+        absolute_path = QFileDialog.getOpenFileName(self, 'Open file')
+                                                    # '.', "wav files (*.wav)")
         self.lineEdit.setText(absolute_path[0])
 
     def transfer_button(self):
-        self.A.recognize(self.lineEdit.text())
+        try:
+            absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
+                                                        '.', "wav files (*.wav)")
+            self.lineEdit.setText(absolute_path[0])
+            self.A.recognize(absolute_path[0])
+
+        except:
+            print("no such file")
 
     def File_Trans(self):
         absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
                                                     '.', "wav files (*.wav)")
-        if absolute_path:
-            os.system("ffmpeg -i "+absolute_path+"output.wav")
+        if absolute_path[0]:
+            os.system("ffmpeg -i "+absolute_path[0]+ " out.wav")
         else:
             print("No such file")
 
+    def Open_Json(self):
+        try:
+            absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
+                                                        '.', "wav files (*.json)")[0]
+            self.lineEdit.setText(absolute_path)
+            txt = self.A.openjson(absolute_path)
+            self.speechText.setText(txt)
 
-if __name__ == '__main__':
+        except:
+            print("no such file")
 
+
+
+
+def GO():
     app = QApplication(sys.argv)
     gallery = WidgetGallery()
     gallery.show()
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    T1 = threading.Thread(target=GO())
+    T1.start()

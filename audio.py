@@ -42,7 +42,7 @@ class Recorder:
                 save_buffer.append( string_audio_data )
             timec -= 1
             print(timec)
-            if not self.recording or timec == 0:
+            if not self.recording :
                 if len(save_buffer)>0:
                     self.Voice_String = save_buffer
                     save_buffer = [] 

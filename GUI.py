@@ -27,10 +27,7 @@ class GUI(QDialog):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    qb = GUI()
-    qb.show()
-    sys.exit(app.exec_())
+    GUI.GO()
 
 
 
