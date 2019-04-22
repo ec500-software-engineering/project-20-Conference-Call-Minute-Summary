@@ -53,6 +53,7 @@ import AudioToTest
 import os
 import audio
 import threading
+import audio_v3
 
 
 class WidgetGallery(QDialog):
@@ -88,6 +89,8 @@ class WidgetGallery(QDialog):
         mainLayout.setColumnStretch(0, 1)
         mainLayout.setColumnStretch(1, 1)
         self.setLayout(mainLayout)
+
+        self.re = audio_v3.Recorder()
 
         self.setWindowTitle("Styles")
         self.changeStyle('Windows')
@@ -167,12 +170,13 @@ class WidgetGallery(QDialog):
     def recording_button_clicked(self):
         if self.recordingButton.isChecked():
             self.recordingButton.setText("Stop Recording")
-            T = threading.Thread(target=self.audio.recorder())
-            T.start()
-            # self.audio.recorder()
+            self.re.start()
+            # T = threading.Thread(target=self.audio.recorder())
+            # T.start()
         else:
+            self.re.stop()
+            self.re.save("test.wav")
             self.recordingButton.setText("Start Recording")
-            # self.audio.stop_record()
 
     def choose_button_clicked(self):
         absolute_path = QFileDialog.getOpenFileName(self, 'Open file')
