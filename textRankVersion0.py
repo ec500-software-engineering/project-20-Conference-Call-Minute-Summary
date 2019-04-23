@@ -16,7 +16,7 @@ def get_word_confidence():
 
     global co_dict
     global word_all
-    stopwords = {line.strip(): 1 for line in open('./data/stopwords.txt', 'r', encoding='utf-8').readlines()}
+    stopwords = {line.strip(): 1 for line in open('./stopwords.txt', 'r', encoding='utf-8').readlines()}
 
     sentence_li = [i.lstrip().rstrip() for i in text.split('.')]
 
