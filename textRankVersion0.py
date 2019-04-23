@@ -9,8 +9,22 @@ words, to see how brilliant this algorithm is. So, how does this algorithm work?
 is always an good algorithm as long as it is written by me. Make sense? No? OK, actually this text-rank algorithm uses
 concept of NLP, which is Natural Language Processing, a significant algorithm nowadays in machine learning area.
 Actually I don't know well about NLP, but I understand NLP algorithm is very cool. NLP algorithm help me design and 
-implement this algorithm. Now, can you guess the keywords of this stupid text? Is that like "Algorithm","text rank"? 
-Do you believe this program can figure it out? Let's see!"""
+implement this text rank algorithm. Now, can you guess the keywords of this stupid text? 
+Is that like "Algorithm","text rank"? Do you believe this program can figure it out? Let's see!"""
+
+
+'''
+Test results:
+------------------
+Two keywords combination1: text rank
+Three keywords combination1: text rank algorithm
+Two keywords combination2: rank algorithm
+Two keywords combination3: NLP algorithm
+Two keywords combination4: good algorithm
+Two keywords combination5: own text
+
+Process finished with exit code 0
+'''
 
 """confidence between word and word, dict"""
 
@@ -104,13 +118,18 @@ In this approach, I just try to combine any two words of the sorted (ranked) wor
 
 def get_combine_word():
     """combination of words"""
+    i = 0
+    j = 0
     for w1 in sorted_li[:10]:
+
         for w2 in sorted_li[:10]:
             if w1[0] + ' ' + w2[0] in text:
-                print(w1[0] + ' ' + w2[0])
+                i += 1
+                print("Two keywords combination" + str(i) + ": " + w1[0] + ' ' + w2[0])
             for w3 in sorted_li[:10]:
                 if w1[0] + ' ' + w2[0] + ' ' + w3[0] in text:
-                    print(w1[0] + ' ' + w2[0] + ' ' + w3[0])
+                    j += 1
+                    print("Three keywords combination" + str(j) + ": " + w1[0] + ' ' + w2[0] + ' ' + w3[0])
 
 
 if __name__ == '__main__':
