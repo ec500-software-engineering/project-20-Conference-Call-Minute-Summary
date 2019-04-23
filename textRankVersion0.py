@@ -7,16 +7,18 @@ Hi, everyone! My name is Gang and I am gonna introduce you an amazing text-rank 
 a really good algorithm because its efficiency and robust. You can type your own text to get a text-rank of your own 
 words, to see how brilliant this algorithm is. So, how does this algorithm work? It uses a concept that an algorithm 
 is always an good algorithm as long as it is written by me. Make sense? No? OK, actually this text-rank algorithm uses
-concept of NLP, which is Natural Language Processing, a significant algorithm nowadays in machine learning area."""
-
+concept of NLP, which is Natural Language Processing, a significant algorithm nowadays in machine learning area.
+Actually I don't know well about NLP, but I understand NLP algorithm is very cool. NLP algorithm help me design and 
+implement this algorithm. Now, can you guess the keywords of this stupid text? Is that like "Algorithm","text rank"? 
+Do you believe this program can figure it out? Let's see!"""
 
 """confidence between word and word, dict"""
 
-def get_word_confidence():
 
-    global co_dict
-    global word_all
-    stopwords = {line.strip(): 1 for line in open('./stopwords.txt', 'r', encoding='utf-8').readlines()}
+def get_word_confidence():
+    global confidence_Dict
+    global allWord
+    stopwords = {line.strip(): 1 for line in open('./words/stopwords.txt', 'r', encoding='utf-8').readlines()}
 
     sentence_li = [i.lstrip().rstrip() for i in text.split('.')]
 
@@ -29,7 +31,7 @@ def get_word_confidence():
                 word_li.remove(' ')
             if '\n' in word_li:
                 word_li.remove('\n')
-        #print(word_li)
+        # print(word_li)
         for index in range(100):
             new_word_li = word_li[index:index + 5]
             if len(new_word_li) == 5:
@@ -39,42 +41,45 @@ def get_word_confidence():
                         if a != b:
                             co_tuple_dict[(a, b)] += 1
 
-    #print(co_tuple_dict)
-    #print(num_dict)
-    co_dict = dict()
+    # print(co_tuple_dict)
+    # print(num_dict)
+    confidence_Dict = dict()
     for tuple_ab, num in co_tuple_dict.items():
-        co_dict[tuple_ab] = num / num_dict[tuple_ab[0]]
+        confidence_Dict[tuple_ab] = num / num_dict[tuple_ab[0]]
 
-    word_all = num_dict.keys()
-    #print(word_all)
-    #print(len(word_all))
-    return co_dict, word_all
+    allWord = num_dict.keys()
+    # print(allWord)
+    # print(len(allWord))
+    return confidence_Dict, allWord
+
 
 """get textrank's idea"""
 
-def get_square_matrix():
-    
+
+def get_matrix():
     global li_np
     li = []
-    for word in word_all:
+    for word in allWord:
         li2 = []
-        for word2 in word_all:
-            cow = co_dict.get((word, word2), 0)
+        for word2 in allWord:
+            cow = confidence_Dict.get((word, word2), 0)
             li2.append(cow / 4)
         li.append(li2)
         # print(sum(li2))
-    #print(li)
+    # print(li)
     li_np = np.array(li)
     return li_np
 
+
 """initialize,converge"""
+
 
 def calculate_converge_list():
     global M, U
     M = li_np.T
-    U = [1 / len(word_all) for i in word_all]
+    U = [1 / len(allWord) for i in allWord]
     U0 = np.array(U)
-    #print(U0)
+    # print(U0)
     U_past = []
     while True:
         # U = np.dot(M, U)
@@ -85,15 +90,17 @@ def calculate_converge_list():
         U_past = U
         # print(U)
 
-    #print('U converge to: ', U)
-    #print(list(zip(word_all, U)))
-    li = sorted(list(zip(word_all, U)), key=lambda x: x[1], reverse=True)
-    #print(li)
+    # print('U converge to: ', U)
+    # print(list(zip(allWord, U)))
+    li = sorted(list(zip(allWord, U)), key=lambda x: x[1], reverse=True)
+    # print(li)
     return li
+
 
 '''
 In this approach, I just try to combine any two words of the sorted (ranked) words.
 '''
+
 
 def get_combine_word():
     """combination of words"""
@@ -103,11 +110,11 @@ def get_combine_word():
                 print(w1[0] + ' ' + w2[0])
             for w3 in sorted_li[:10]:
                 if w1[0] + ' ' + w2[0] + ' ' + w3[0] in text:
-                    print(w1[0] + ' '+ w2[0] + ' ' + w3[0])
+                    print(w1[0] + ' ' + w2[0] + ' ' + w3[0])
 
 
 if __name__ == '__main__':
-    co_dict, word_all = get_word_confidence()
-    li_np = get_square_matrix()
+    confidence_Dict, allWord = get_word_confidence()
+    li_np = get_matrix()
     sorted_li = calculate_converge_list()
     get_combine_word()
