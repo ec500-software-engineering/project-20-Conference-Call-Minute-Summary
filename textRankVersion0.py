@@ -97,13 +97,13 @@ In this approach, I just try to combine any two words of the sorted (ranked) wor
 
 def get_combine_word():
     """combination of words"""
-    for w1 in sorted_li[:15]:
-        for w2 in sorted_li[:15]:
-            if w1[0] + w2[0] in text:
-                print(w1[0] + w2[0])
-            for w3 in sorted_li[:15]:
-                if w1[0] + w2[0] + w3[0] in text:
-                    print(w1[0] + w2[0] + w3[0])
+    for w1 in sorted_li[:10]:
+        for w2 in sorted_li[:10]:
+            if w1[0] + ' ' + w2[0] in text:
+                print(w1[0] + ' ' + w2[0])
+            for w3 in sorted_li[:10]:
+                if w1[0] + ' ' + w2[0] + ' ' + w3[0] in text:
+                    print(w1[0] + ' '+ w2[0] + ' ' + w3[0])
 
 
 if __name__ == '__main__':
