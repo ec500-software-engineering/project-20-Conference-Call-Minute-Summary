@@ -137,3 +137,4 @@ if __name__ == '__main__':
     li_np = get_matrix()
     sorted_li = calculate_converge_list()
     get_combine_word()
+ 
