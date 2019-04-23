@@ -10,9 +10,10 @@ is always an good algorithm as long as it is written by me. Make sense? No? OK, 
 concept of NLP, which is Natural Language Processing, a significant algorithm nowadays in machine learning area."""
 
 
+"""confidence between word and word, dict"""
 
 def get_word_confidence():
-    """confidence between word and word, dict"""
+
     global co_dict
     global word_all
     stopwords = {line.strip(): 1 for line in open('./data/stopwords.txt', 'r', encoding='utf-8').readlines()}
@@ -43,9 +44,10 @@ def get_word_confidence():
     #print(len(word_all))
     return co_dict, word_all
 
+"""get textrank's idea"""
 
 def get_square_matrix():
-    """get textrank's idea"""
+    
     global li_np
     li = []
     for word in word_all:
@@ -59,9 +61,9 @@ def get_square_matrix():
     li_np = np.array(li)
     return li_np
 
+"""initialize,converge"""
 
 def calculate_converge_list():
-    """initialize,converge"""
     global M, U
     M = li_np.T
     U = [1 / len(word_all) for i in word_all]
@@ -83,6 +85,9 @@ def calculate_converge_list():
     #print(li)
     return li
 
+'''
+In this approach, I just try to combine any two words of the sorted (ranked) words.
+'''
 
 def get_combine_word():
     """combination of words"""
