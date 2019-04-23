@@ -24,6 +24,12 @@ def get_word_confidence():
     num_dict = defaultdict(int)
     for sentence in sentence_li:
         word_li = [i for i in jieba.cut(sentence) if not stopwords.get(i, None)]
+        for i in range(word_li.count(' ')):
+            if ' ' in word_li:
+                word_li.remove(' ')
+            if '\n' in word_li:
+                word_li.remove('\n')
+        #print(word_li)
         for index in range(100):
             new_word_li = word_li[index:index + 5]
             if len(new_word_li) == 5:
