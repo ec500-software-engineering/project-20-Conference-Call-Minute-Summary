@@ -2,7 +2,7 @@ from collections import defaultdict
 import numpy as np
 import jieba
 
-text = """
+text1 = """
 Hi, everyone! My name is Gang and I am gonna introduce you an amazing text-rank algorithm. What is this algorithm? It's 
 a really good algorithm because its efficiency and robust. You can type your own text to get a text-rank of your own 
 words, to see how brilliant this algorithm is. So, how does this algorithm work? It uses a concept that an algorithm 
@@ -12,23 +12,9 @@ Actually I don't know well about NLP, but I understand NLP algorithm is very coo
 implement this text rank algorithm. Now, can you guess the keywords of this stupid text? 
 Is that like "Algorithm","text rank"? Do you believe this program can figure it out? Let's see!"""
 
-
-'''
-Test results:
-------------------
-Two keywords combination1: text rank
-Three keywords combination1: text rank algorithm
-Two keywords combination2: rank algorithm
-Two keywords combination3: NLP algorithm
-Two keywords combination4: good algorithm
-Two keywords combination5: own text
-
-Process finished with exit code 0
-'''
-
 """confidence between word and word, dict"""
-
-
+text = open('./words/text.txt','r',encoding='utf-8').read()
+#text = text1
 def get_word_confidence():
     global confidence_Dict
     global allWord
@@ -39,7 +25,9 @@ def get_word_confidence():
     co_tuple_dict = defaultdict(int)
     num_dict = defaultdict(int)
     for sentence in sentence_li:
+
         word_li = [i for i in jieba.cut(sentence) if not stopwords.get(i, None)]
+        # print(word_li)
         for i in range(word_li.count(' ')):
             if ' ' in word_li:
                 word_li.remove(' ')
@@ -120,21 +108,39 @@ def get_combine_word():
     """combination of words"""
     i = 0
     j = 0
+    k = 0
+    wordlist = []
+    # print(sorted_li)
+    print("Ranked keywords of this article:\n")
     for w1 in sorted_li[:10]:
-
         for w2 in sorted_li[:10]:
             if w1[0] + ' ' + w2[0] in text:
                 i += 1
-                print("Two keywords combination" + str(i) + ": " + w1[0] + ' ' + w2[0])
+                print("Two keywords combination " + str(i)
+                      + ": " + w1[0] + ' ' + w2[0])
+                wordlist.append(("Two keywords combination " + str(i)
+                      + ": " + w1[0] + ' ' + w2[0]))
             for w3 in sorted_li[:10]:
                 if w1[0] + ' ' + w2[0] + ' ' + w3[0] in text:
                     j += 1
-                    print("Three keywords combination" + str(j) + ": " + w1[0] + ' ' + w2[0] + ' ' + w3[0])
-
+                    print("Three keywords combination " + str(j)
+                          + ": " + w1[0] + ' ' + w2[0] + ' ' + w3[0])
+                    wordlist.append(("Three keywords combination " + str(j)
+                          + ": " + w1[0] + ' ' + w2[0] + ' ' + w3[0]))
+                for w4 in sorted_li[:20]:
+                    if w1[0] + ' ' + w2[0] + ' ' + w3[0] + ' ' + w4[0] in text:
+                        k += 1
+                        print("Four keywords combination " + str(j)
+                              + ": " + w1[0] + ' ' + w2[0] + ' '
+                              + w4[0] + ' ' + w3[0])
+    return wordlist
 
 if __name__ == '__main__':
     confidence_Dict, allWord = get_word_confidence()
     li_np = get_matrix()
     sorted_li = calculate_converge_list()
-    get_combine_word()
- 
+    out_path = './words/keywords.txt'
+    file = open(out_path, 'w')
+    for i in get_combine_word():
+        file.write(i + '\n')
+    file.close()
