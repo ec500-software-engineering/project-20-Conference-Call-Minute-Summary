@@ -197,7 +197,7 @@ class WidgetGallery(QDialog):
         absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
                                                     '.', "wav files (*.wav)")
         if absolute_path[0]:
-            os.system("ffmpeg -i "+absolute_path[0]+ " out.wav")
+            os.system("ffmpeg -y -i "+absolute_path[0]+ " out.wav")
         else:
             print("No such file")
 
