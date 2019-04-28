@@ -51,7 +51,6 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
 import sys
 import AudioToTest
 import os
-import audio
 import threading
 import audio_v3
 
@@ -94,8 +93,6 @@ class WidgetGallery(QDialog):
 
         self.setWindowTitle("Styles")
         self.changeStyle('Windows')
-
-        self.audio = audio.Recorder()
 
         self.A = AudioToTest.AudioToTest()
 

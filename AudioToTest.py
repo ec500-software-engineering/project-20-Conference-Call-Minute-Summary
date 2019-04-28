@@ -1,6 +1,7 @@
 from __future__ import print_function
 import json
 from ibm_watson import SpeechToTextV1
+import time
 
 
 class AudioToTest():
@@ -12,7 +13,7 @@ class AudioToTest():
             iam_apikey="")
         #print('debug1')
 
-    def recognize(self, path):
+    def recognize(self, path:str):
         #print('debug2')
         with open(path,
                   'rb') as audio_file:
@@ -26,11 +27,12 @@ class AudioToTest():
                     ).get_result(),
                 indent=2)
             #print(text)
-            with open("./test.json", 'w') as F:
+            with open("./"+path.split("/")[-1]+".json", 'w') as F:
                 F.write(text)
         #print('debug3')
 
     def openjson(self, path):
+
         js = open(path)
         dic = json.loads(js.read())
         print(dic)
@@ -42,3 +44,14 @@ class AudioToTest():
                 file.write(j['transcript'])
         file.close()
         return dic['results'][0]['alternatives'][0]['transcript']
+
+    def audiojson(self,path):
+        js = open(path)
+        dic = json.loads(js.read())
+        ret = ""
+        print(dic)
+        for i in dic['results']:
+            for j in i['alternatives']:
+                print(j['transcript'])
+                ret = ret + j['transcript']
+        return ret
