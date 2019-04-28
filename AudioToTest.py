@@ -27,7 +27,7 @@ class AudioToTest():
                     ).get_result(),
                 indent=2)
             #print(text)
-            with open("./"+path.split("/")[-1]+".json", 'w') as F:
+            with open("./"+path.split("/")[-1].split(".")[0]+".json", 'w') as F:
                 F.write(text)
         #print('debug3')
 

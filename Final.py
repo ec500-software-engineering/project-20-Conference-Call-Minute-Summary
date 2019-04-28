@@ -48,9 +48,6 @@ class CCMS(QWidget):
         self.afb.clicked.connect(self.audio_text)
         self.grid.addWidget(self.afb,4,2,1,1)
 
-        self.english = QRadioButton("English")
-        self.grid.addWidget(self.english, 0, 5)
-
         self.textrank = QRadioButton("Text Rank")
         self.grid.addWidget(self.textrank,0,6)
 
@@ -64,6 +61,13 @@ class CCMS(QWidget):
         self.chinese.clicked.connect(self.to_chinese)
         self.grid.addWidget(self.chinese,0,4)
 
+        self.english = QRadioButton("English")
+        self.english.clicked.connect(self.to_english)
+        self.grid.addWidget(self.english, 0, 5)
+
+        self.export = QPushButton("Export Text")
+        self.grid.addWidget(self.export,4,3)
+
         self.time = ""
 
     def recording_button_clicked(self):
@@ -76,37 +80,43 @@ class CCMS(QWidget):
             self.rb.setText("Start Recording")
 
     def audio_trans(self):
-        try:
-            absolute_path = QFileDialog.getOpenFileName(self, 'Open file','.',"all files(*);;"
-                                                        "wav files (*.wav);;"
-                                                        "mp3 files(*.mp3);;flac files(*.flac)")
-            if absolute_path[0]:
-                if self.filename.text():
-                    os.system("ffmpeg -y -i " + absolute_path[0] +" "+ self.filename.text()+".wav")
-                else:
-                    os.system("ffmpeg -y -i " + absolute_path[0] + " out.wav")
+        absolute_path = QFileDialog.getOpenFileName(self, 'Open file','.',"all files(*);;"
+                                                    "wav files (*.wav);;"
+                                                    "mp3 files(*.mp3);;flac files(*.flac)")
+        if absolute_path[0]:
+            if self.filename.text():
+                os.system("ffmpeg -y -i " + absolute_path[0] +" "+ self.filename.text()+".wav")
             else:
-                pass
-
-        except :
+                os.system("ffmpeg -y -i " + absolute_path[0] + " out.wav")
+        else:
             pass
 
+
     def audio_text(self):
-      #  try:
+        try:
             absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
                                                         '.', "wav files (*.wav)")
             self.A.recognize(absolute_path[0])
             print(absolute_path[0].split("/")[-1].split(".")[0]+".json")
             text = self.A.audiojson(absolute_path[0].split("/")[-1].split(".")[0]+".json")
-            self.audiotext.setText(text)
+            self.texttran.setText(text)
 
-        # except ibm_cloud_sdk_core.api_exception.ApiException:
-        #     print("need api property")
-        #     sys.exit(1)
+        except ibm_cloud_sdk_core.api_exception.ApiException:
+            print("need api property")
+            sys.exit(1)
 
     def to_chinese(self):
         text = self.audiotext.toPlainText()
         self.audiotext.setText(self.T.translate(text,"zh-CN")['translatedText'])
+
+    def to_english(self):
+        text = self.audiotext.toPlainText()
+        self.audiotext.setText(self.T.translate(text, "en")['translatedText'])
+
+    def export_text(self):
+        text = self.audiotext.toPlainText()
+        with open("./"+self.namelabel.text()) as F:
+            F.write(text)
 
 
 
