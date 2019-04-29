@@ -5,8 +5,9 @@ For people who have had a conference call, they could transfer their call audio 
 about their conference call.
 For people who need to have a different language version for their text, they could also get their translation with
  this software.
-##Architecture
-##Technology Selection
+## Architecture
+image
+## Technology Selection
 * IBM Speech to Text API
     * We use Speech to Text API to tranfer audio to text
 * Google Translation API
