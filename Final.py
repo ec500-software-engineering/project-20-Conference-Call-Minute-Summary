@@ -7,6 +7,7 @@ import os
 import AudioToTest
 import ibm_cloud_sdk_core
 import translation
+import textRankVersion0
 
 
 class CCMS(QWidget):
@@ -49,6 +50,7 @@ class CCMS(QWidget):
         self.grid.addWidget(self.afb,4,2,1,1)
 
         self.textrank = QRadioButton("Text Rank")
+        self.textrank.clicked.connect(self.text_rank)
         self.grid.addWidget(self.textrank,0,6)
 
         self.audiotext = QTextEdit()
@@ -107,16 +109,28 @@ class CCMS(QWidget):
 
     def to_chinese(self):
         text = self.audiotext.toPlainText()
-        self.audiotext.setText(self.T.translate(text,"zh-CN")['translatedText'])
+        self.texttran.setText(self.T.translate(text,"zh-CN")['translatedText'])
 
     def to_english(self):
         text = self.audiotext.toPlainText()
-        self.audiotext.setText(self.T.translate(text, "en")['translatedText'])
+        self.texttran.setText(self.T.translate(text, "en")['translatedText'])
 
     def export_text(self):
         text = self.audiotext.toPlainText()
         with open("./"+self.namelabel.text()) as F:
             F.write(text)
+
+    def text_rank(self):
+        TR = textRankVersion0.TextRank(self.audiotext.toPlainText())
+        TR.get_word_confidence()
+        TR.get_matrix()
+        TR.calculate_converge_list()
+        out = ""
+        for i in TR.get_combine_word():
+            i = i.split(":")[-1]
+            out = out+i+"\n"
+        self.texttran.setText(out)
+
 
 
 
