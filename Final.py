@@ -99,7 +99,7 @@ class CCMS(QWidget):
             self.A.recognize(absolute_path[0])
             print(absolute_path[0].split("/")[-1].split(".")[0]+".json")
             text = self.A.audiojson(absolute_path[0].split("/")[-1].split(".")[0]+".json")
-            self.texttran.setText(text)
+            self.texttran.setText(text)  
 
         except ibm_cloud_sdk_core.api_exception.ApiException:
             print("need api property")
