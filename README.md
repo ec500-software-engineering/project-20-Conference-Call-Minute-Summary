@@ -6,7 +6,7 @@ about their conference call.
 For people who need to have a different language version for their text, they could also get their translation with
  this software.
 ## Architecture
-image
+![](https://github.com/ec500-software-engineering/project-20-Conference-Call-Minute-Summary/raw/master/images/Architecture.png)
 ## Technology Selection
 * IBM Speech to Text API
     * We use Speech to Text API to tranfer audio to text
@@ -41,7 +41,7 @@ see http://www.portaudio.com/
 * FFmpeg  
 ``pip install ffmpeg``  
 ### GUI
-image
+![](https://github.com/ec500-software-engineering/project-20-Conference-Call-Minute-Summary/raw/master/images/GUI.png)
 
 
 
