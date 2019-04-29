@@ -1,7 +1,6 @@
 from __future__ import print_function
 import json
 from ibm_watson import SpeechToTextV1
-import time
 
 
 class AudioToTest():
