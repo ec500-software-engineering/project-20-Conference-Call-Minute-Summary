@@ -42,12 +42,11 @@
 #############################################################################
 
 
-from PyQt5.QtCore import QDateTime, Qt, QTimer, QDir
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
-        QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-        QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
-        QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-        QVBoxLayout, QWidget, QFileDialog)
+from PyQt5.QtWidgets import (QApplication, QComboBox,
+        QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
+         QPushButton,
+         QStyleFactory,
+        QVBoxLayout, QFileDialog)
 import sys
 import AudioToTest
 import os
@@ -187,7 +186,7 @@ class WidgetGallery(QDialog):
             self.lineEdit.setText(absolute_path[0])
             self.A.recognize(absolute_path[0])
 
-        except:
+        except FileNotFoundError:
             print("no such file")
 
     def File_Trans(self):
@@ -206,7 +205,7 @@ class WidgetGallery(QDialog):
             txt = self.A.openjson(absolute_path)
             self.speechText.setText(txt)
 
-        except:
+        except FileNotFoundError:
             print("no such file")
 
 
