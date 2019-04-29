@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel,  QGridLayout, QTextEdit, QRadioButton,\
-    QCheckBox,QFileDialog,QLineEdit
+    QFileDialog,QLineEdit
 import audio_v3
 import time
 import os
@@ -68,6 +68,7 @@ class CCMS(QWidget):
         self.grid.addWidget(self.english, 0, 5)
 
         self.export = QPushButton("Export Text")
+        self.export.clicked.connect(self.export_text)
         self.grid.addWidget(self.export,4,3)
 
         self.time = ""
@@ -101,7 +102,7 @@ class CCMS(QWidget):
             self.A.recognize(absolute_path[0])
             print(absolute_path[0].split("/")[-1].split(".")[0]+".json")
             text = self.A.audiojson(absolute_path[0].split("/")[-1].split(".")[0]+".json")
-            self.texttran.setText(text)  
+            self.audiotext.setText(text)
 
         except ibm_cloud_sdk_core.api_exception.ApiException:
             print("need api property")
@@ -116,8 +117,12 @@ class CCMS(QWidget):
         self.texttran.setText(self.T.translate(text, "en")['translatedText'])
 
     def export_text(self):
-        text = self.audiotext.toPlainText()
-        with open("./"+self.namelabel.text()) as F:
+        text = self.texttran.toPlainText()
+        if self.filename.text() != "":
+            filename = self.filename.text()+".txt"
+        else:
+            filename = "out.txt"
+        with open("./"+filename,'w') as F:
             F.write(text)
 
     def text_rank(self):
@@ -130,8 +135,6 @@ class CCMS(QWidget):
             i = i.split(":")[-1]
             out = out+i+"\n"
         self.texttran.setText(out)
-
-
 
 
 if __name__ == '__main__':
