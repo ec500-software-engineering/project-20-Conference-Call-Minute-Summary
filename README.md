@@ -42,6 +42,15 @@ see http://www.portaudio.com/
 ``pip install ffmpeg``  
 ### GUI
 ![](https://github.com/ec500-software-engineering/project-20-Conference-Call-Minute-Summary/raw/master/images/GUI.png)
+With Recording button, you could record your own audio. Press it to start and stop recording.  
+Since the application will only accept ```.wav``` file, so you could use File Transfer button to transfer your audio
+ file to ```.wav``` file.  
+And you could use Add audio File button to transfer audio to text.  
+The text would be shown in the left text field. Then you could choose to transfer it to English or Chinese, or get its text rank
+ in the right text field.
+The export button will save the text in the right text field and the name of the file will be the text in the text box.
+
+ 
 
 
 
