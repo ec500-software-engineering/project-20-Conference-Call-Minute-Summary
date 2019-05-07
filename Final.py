@@ -8,6 +8,7 @@ import AudioToTest
 import ibm_cloud_sdk_core
 import translation
 import textRankVersion0
+from queue import Queue
 
 
 class CCMS(QWidget):
@@ -16,7 +17,6 @@ class CCMS(QWidget):
         self.setWindowTitle('Conference Call Minute Summary')
 
         self.re = audio_v3.Recorder()
-        self.A = AudioToTest.AudioToTest()
         self.T = translation.translation()
 
         self.grid = QGridLayout()
@@ -99,10 +99,13 @@ class CCMS(QWidget):
         try:
             absolute_path = QFileDialog.getOpenFileName(self, 'Open file',
                                                         '.', "wav files (*.wav)")
-            self.A.recognize(absolute_path[0])
-            print(absolute_path[0].split("/")[-1].split(".")[0]+".json")
-            text = self.A.audiojson(absolute_path[0].split("/")[-1].split(".")[0]+".json")
-            self.audiotext.setText(text)
+            if absolute_path[0]:
+                A = AudioToTest.AudioToTest()
+
+                A.recognize(absolute_path[0])
+                print(absolute_path[0].split("/")[-1].split(".")[0]+".json")
+                text = self.A.audiojson(absolute_path[0].split("/")[-1].split(".")[0]+".json")
+                self.audiotext.setText(text)
 
         except ibm_cloud_sdk_core.api_exception.ApiException:
             print("need api property")
